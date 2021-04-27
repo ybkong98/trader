@@ -30,7 +30,7 @@ def get_k():
     return result
 
 def get_target_price(ticker, k):
-    """변동성 돌파 전략으로 매수 목표가 조회"""
+    """get target price"""
     df = pyupbit.get_ohlcv(ticker, interval="minute60", count=72)
     target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * k
     return target_price
@@ -48,7 +48,7 @@ def get_ma15(ticker):
     return ma15
 
 def get_balance(ticker):
-    """잔고 조회"""
+    """get account info"""
     balances = upbit.get_balances()
     for b in balances:
         if b['currency'] == ticker:
@@ -58,14 +58,14 @@ def get_balance(ticker):
                 return 0
 
 def get_current_price(ticker):
-    """현재가 조회"""
+    """get current price of ticker"""
     return pyupbit.get_orderbook(tickers=ticker)[0]["orderbook_units"][0]["ask_price"]
 
-# 로그인
+# login
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
-# 자동매매 시작
+# start trading
 while True:
     try:
         now = datetime.datetime.now()
