@@ -82,7 +82,7 @@ while True:
                     upbit.buy_market_order("KRW-BTT", krw*0.9995)
         else:
             BTT = get_current_price("KRW-BTT")*get_balance("KRW-BTT")
-            if btc > 5000:
+            if BTT > 5000:
                 upbit.sell_market_order("KRW-BTT", BTT*0.9995)
         time.sleep(1)
     except Exception as e:
