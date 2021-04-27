@@ -2,8 +2,8 @@ import time
 import pyupbit
 import datetime
 
-access = "ShkhhIzBOStvE1htVAWxXxX1mxOo69u5JpZ38OH1"
-secret = "Sn23wuVplOd82za6GALKxfovqYYI5qa2Lebnro1at"
+access = "key"
+secret = "key"
 
 def get_ror(k=0.5):
     df = pyupbit.get_ohlcv("KRW-BTT",count=24,interval="minute60")
