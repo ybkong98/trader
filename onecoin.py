@@ -73,7 +73,7 @@ while True:
         end_time = start_time + datetime.timedelta(hours=1)
 
         if start_time < now < end_time - datetime.timedelta(seconds=10):
-            target_price = get_target_price("KRW-DOGE", 0.5)
+            target_price = get_target_price("KRW-DOGE", get_k())
             current_price = get_current_price("KRW-DOGE")
             print(target_price,current_price)
             if target_price < 1.01*current_price:
