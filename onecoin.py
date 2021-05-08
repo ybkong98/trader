@@ -1,9 +1,10 @@
 import time
 import pyupbit
 import datetime
+import numpy as np
 
-access = "key"
-secret = "key"
+access = "3lRyWFJGeaWrinlGBpNDNrTbfKtIyaDo9ivqDSBZ"
+secret = "Yo4CmD2i1ULxfete4adBRKqxcc7JmwgNioW8GAHb"
 
 ticker="KRW-DOGE"
 def get_ror(ticker="KRW-DOGE",k=0.5):
@@ -18,6 +19,12 @@ def get_ror(ticker="KRW-DOGE",k=0.5):
 
     ror = df['ror'].cumprod()[-2]
     return ror
+
+def get_ma15(ticker):
+    #15시간 평균
+    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=15)
+    ma15 = df['close'].rolling(15).mean().iloc[-1]
+    return ma15
 
 def get_k(ticker="KRW-DOGE"):
     #백테스팅 기반, 최선의 변동성 계수 산출
@@ -76,7 +83,7 @@ while True:
             target_price = get_target_price("KRW-DOGE", get_k())
             current_price = get_current_price("KRW-DOGE")
             print(target_price,current_price)
-            if target_price < 1.01*current_price:
+            if target_price < 1.01*current_price and get_ma15(ticker="KRW-DOGE")<current_price:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     upbit.buy_market_order("KRW-DOGE", krw*0.9995)
