@@ -3,8 +3,8 @@ import pyupbit
 import datetime
 import numpy as np
 
-access = "3lRyWFJGeaWrinlGBpNDNrTbfKtIyaDo9ivqDSBZ"
-secret = "Yo4CmD2i1ULxfete4adBRKqxcc7JmwgNioW8GAHb"
+access = "key"
+secret = "key"
 
 ticker="KRW-DOGE"
 def get_ror(ticker="KRW-DOGE",k=0.5):
