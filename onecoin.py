@@ -9,7 +9,7 @@ secret = "key"
 ticker="KRW-DOGE"
 def get_ror(ticker="KRW-DOGE",k=0.5):
     #백테스팅으로 k값에 따른 수익률 산출
-    df = pyupbit.get_ohlcv(ticker, count=7,interval="minute60")
+    df = pyupbit.get_ohlcv(ticker, count=24,interval="minute60")
     df['range'] = (df['high'] - df['low']) * k
     df['target'] = df['open'] + df['range'].shift(1)
 
@@ -22,7 +22,7 @@ def get_ror(ticker="KRW-DOGE",k=0.5):
 
 def get_ma15(ticker):
     #15시간 평균
-    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=15)
+    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=24)
     ma15 = df['close'].rolling(15).mean().iloc[-1]
     return ma15
 
@@ -48,7 +48,7 @@ def get_start_time(ticker):
     start_time = df.index[0]
     return start_time
 
-def get_ma15(ticker):
+def get_ma15(ticker="KRW-DOGE"):
     #15시간 평균
     df = pyupbit.get_ohlcv(ticker, interval="minute240", count=15)
     ma15 = df['close'].rolling(15).mean().iloc[-1]
@@ -76,21 +76,21 @@ print("autotrade start")
 while True:
     try:
         now = datetime.datetime.now()
-        start_time = get_start_time("KRW-DOGE")
+        start_time = get_start_time(ticker)
         end_time = start_time + datetime.timedelta(hours=1)
 
-        if start_time < now < end_time - datetime.timedelta(seconds=10):
-            target_price = get_target_price("KRW-DOGE", get_k())
-            current_price = get_current_price("KRW-DOGE")
-            print(target_price,current_price)
-            if target_price < 1.01*current_price and get_ma15(ticker="KRW-DOGE")<current_price:
+        if start_time < now < end_time - datetime.timedelta(seconds=60):
+            target_price = get_target_price(ticker, get_k(ticker))
+            current_price = get_current_price(ticker)
+            
+            if target_price < 1.05*current_price and get_ma15(ticker=ticker)<current_price:
                 krw = get_balance("KRW")
                 if krw > 5000:
-                    upbit.buy_market_order("KRW-DOGE", krw*0.9995)
+                    upbit.buy_market_order(ticker, krw*0.9995)
         else:
-            DOGE = get_balance("DOGE")*get_current_price("KRW-DOGE")
-            if DOGE > 5000:
-                upbit.sell_market_order("KRW-DOGE", btc*0.9995)
+            value = get_balance(ticker[4:])*get_current_price(ticker)
+            if value > 5000:
+                upbit.sell_market_order(ticker, get_balance(ticker[4:]))
         time.sleep(1)
     except Exception as e:
         print(e)
