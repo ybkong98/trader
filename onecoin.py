@@ -79,7 +79,7 @@ while True:
         start_time = get_start_time(ticker)
         end_time = start_time + datetime.timedelta(hours=1)
 
-        if start_time < now < end_time - datetime.timedelta(seconds=60):
+        if start_time < now < end_time - datetime.timedelta(seconds=10):
             target_price = get_target_price(ticker, get_k(ticker))
             current_price = get_current_price(ticker)
             
